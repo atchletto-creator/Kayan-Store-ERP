@@ -83,3 +83,11 @@ Any change requires the owner's approval.
 - No fake buttons or simulated integrations.
 - Every feature must be tested before being marked complete.
 - Record changes and important decisions.
+## Pending Offline Cash
+- Cash received for temporary offline receipts must be recorded in a separate pending-cash ledger.
+- Pending cash must be traceable by device, employee, and temporary receipt.
+- Pending cash must appear in cash custody reconciliation.
+- No accounting journal, revenue recognition, or central stock movement occurs before transaction approval.
+- Upon approval, pending cash is reconciled and posted to the correct accounts.
+- Upon cancellation, refund or settlement must be recorded with a full audit trail.
+- Cash custody cannot be closed with unresolved pending amounts without an explicit authorized reconciliation process.
