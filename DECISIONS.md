@@ -1,93 +1,104 @@
-# KAYAN STORE ERP — Approved Decisions
+# KAYAN STORE ERP --- DECISIONS
 
-This file records decisions explicitly approved by the project owner.
-Any change requires the owner's approval.
+هذا الملف يسجل القرارات المعتمدة في التخطيط. لا يعتبر أي اقتراح قراراً
+قبل موافقة المستخدم.
 
-## General
-- Business currency: EGP.
-- Timezone: Africa/Cairo.
-- Financial year starts on January 1.
-- Default interface language: Arabic (RTL).
-- English and Turkish are also supported.
-- Start with one branch and one warehouse.
-- The system must support multiple branches and warehouses.
-- Use a Luxury Light Theme.
-- Final colors must be derived from the approved store logo.
+## بنية المشروع
 
-## Business and Operations
-- Product quantities must be integers; no fractional stock.
-- Negative stock is blocked unless explicitly approved by the owner.
-- Inventory changes must be recorded as stock movements.
-- Product costs use Moving Weighted Average.
-- Historical transaction costs must be preserved.
-- Partial purchase receiving is not allowed.
-- Credit sales are supported without installment plans.
-- Partial customer payments are supported.
+-   React/TypeScript/Vite/Tailwind/PWA + Supabase
+    PostgreSQL/Auth/Storage/Edge Functions.
+-   Offline-first باستخدام IndexedDB/Dexie.
+-   EGP، Africa/Cairo، السنة المالية من 1 يناير.
+-   العربية افتراضياً، مع الإنجليزية والتركية.
+-   Supabase Free للتطوير والاختبار فقط؛ الإنتاج في مشروع منفصل.
 
-## Accounting
-- Use double-entry accounting.
-- Every posted journal entry must balance.
-- Posted entries cannot be edited or deleted.
-- Corrections must use reversal entries.
-- Internal transfers are not revenue or expenses.
-- Use NUMERIC/DECIMAL for monetary values.
-- Tax settings are disabled by default until configured.
+## قواعد النظام
 
-## Employees and Permissions
-- Employees log in using username and password.
-- Employee email addresses are internally generated and hidden.
-- No public self-registration.
-- Attendance PIN is separate from login credentials.
-- Standard hourly rate: 12 EGP.
-- Overtime hourly rate: 12 EGP.
-- Calculate working time by actual minutes.
-- Breaks are unpaid by default.
-- Early attendance requires authorized approval.
-- Attendance corrections require a reason and audit record.
-- Only the owner can change hourly rates.
-- Sensitive permissions must be enforced on the server.
+-   قاعدة بيانات مركزية مصدر الحقيقة.
+-   لا تعديل مباشر للأرصدة.
+-   العمليات المالية والمخزنية ذرية وقابلة للتدقيق ومحمية من التكرار.
+-   القيود المرحلة لا تحذف أو تعدل؛ التصحيح بقيد عكسي.
+-   الصلاحيات على مستوى قاعدة البيانات والخادم.
+-   Offline-first مع UUID وOutbox ومزامنة ثنائية الاتجاه ومعالجة
+    التعارضات.
 
-## Telecom and Wallet Services
-- Supported operators: Vodafone Egypt, Orange Egypt, e& Egypt, and WE.
-- Supported wallets: Vodafone Cash, Orange Cash, e& Cash, WE Pay, and InstaPay.
-- Balance sources may include operators, distributors, and traders.
-- The owner defines the default balance source for each operator.
-- Employees may change the source only with permission.
-- Store commission and supplier commission must be separate.
-- No commission revenue is recognized before successful completion.
-- No unverified API integrations.
+## المنتجات والمخزون
 
-## Offline and Conflicting Sales
-- Full offline capability is a final project requirement.
-- Offline functionality will be implemented gradually.
-- Each device uses a unique temporary invoice number.
-- Final invoice numbers are assigned centrally after approval.
-- A conflicting sale for the last available item must remain pending.
-- A temporary receipt is not a final invoice.
-- No central stock deduction or accounting entry before owner resolution.
-- The owner decides how to resolve the conflict.
+-   سجل رئيسي واحد للمنتج مع متغيرات مستقلة.
+-   SKU وباركود ومخزون وتكلفة وسعر مستقل لكل متغير.
+-   IMEI/Serial للأجهزة الفردية وتتبع الدفعات والصلاحية.
+-   FIFO وFEFO ومتوسط تكلفة متحرك.
+-   منع المخزون السالب إلا باستثناء معتمد.
+-   جرد واعتماد فروق الجرد.
+-   مجموعات وباقات وتوافق الجرابات وواقيات الشاشة.
+-   صور متعددة وحجوزات وموردون متعددون ومخزون أمانة.
+-   استلام المشتريات دفعة كاملة؛ لا استلام جزئي معتمد.
 
-## Security and Infrastructure
-- Use Supabase PostgreSQL and Row Level Security.
-- Sensitive operations must use secure server-side functions.
-- No secrets or API keys in frontend code or GitHub.
-- Development and production environments must be separate.
-- Supabase Free is used during development and testing.
-- Review the appropriate plan before real production operation.
-- Backups must be independent of GitHub and Supabase.
-- Backup restoration must be tested before claiming backup readiness.
+## الشحن الإلكتروني
 
-## Development Rules
-- Accounting, cash management, and inventory take priority over POS.
-- Database schema must be reviewed before table creation.
-- No fake buttons or simulated integrations.
-- Every feature must be tested before being marked complete.
-- Record changes and important decisions.
-## Pending Offline Cash
-- Cash received for temporary offline receipts must be recorded in a separate pending-cash ledger.
-- Pending cash must be traceable by device, employee, and temporary receipt.
-- Pending cash must appear in cash custody reconciliation.
-- No accounting journal, revenue recognition, or central stock movement occurs before transaction approval.
-- Upon approval, pending cash is reconciled and posted to the correct accounts.
-- Upon cancellation, refund or settlement must be recorded with a full audit trail.
-- Cash custody cannot be closed with unresolved pending amounts without an explicit authorized reconciliation process.
+-   Vodafone وOrange وEtisalat/e& وWE وخدمات الإنترنت والفواتير وكروت
+    الكهرباء يدوياً.
+-   NFC مرفوض.
+-   العمولة = مبلغ العميل − التكلفة الفعلية للماكينة.
+-   عند النجاح تخصم التكلفة من الماكينة وتضاف العمولة لخزينة المحل.
+-   لا عمولة موظف تلقائية.
+-   لا إعادة محاولة عمياء للعمليات المعلقة.
+-   الاسترداد مرتبط بالعملية الأصلية.
+-   APIs رسمية فقط عند توفرها.
+
+## المحافظ وInstaPay
+
+-   حساب مستقل لكل محفظة وخزينة منفصلة عن خزينة المحل.
+-   عمولة المحل بعد نجاح العملية، وأصل المبلغ ليس ربحاً.
+-   Wallet → InstaPay غير مسموح؛ InstaPay → Wallet مسموح؛ InstaPay →
+    InstaPay وفق دعم الخدمة.
+-   التحويلات الداخلية ليست إيراداً أو مصروفاً.
+-   المالك يحدد صلاحيات الموظفين وحدود التحويل والحسابات والموافقة
+    المطلوبة.
+
+## الخزائن والمالك والأرباح
+
+-   مصروفات شخصية سرية للمالك فقط، محمية على مستوى قاعدة البيانات.
+-   المصروف الشخصي يسجل كذمة على المالك حتى السداد.
+-   إيداعات المالك تمويل/رصيد دائن وليست إيراداً.
+-   توزيع الأرباح في أي وقت، وجزئياً.
+-   نسب الأرباح قابلة للتعديل، مجموعها 100%، والتغيير يسري على الأرباح
+    الجديدة فقط.
+-   سجل مستقل لكل شريك.
+-   اعتماد تسويات الأرباح للمالك فقط.
+-   النسب التاريخية: عمر 30%، هشام 30%، المحل 30%، الاحتياطي 10%؛ قابلة
+    للتعديل وليست ثابتة.
+
+## الموارد البشرية
+
+-   ملف الموظف بالبيانات الأساسية، وإدارة البيانات من المالك.
+-   حضور وانصراف وتأخير وغياب واستئذان.
+-   إجازات سنوية ومرضية وطارئة بطلب واعتماد.
+-   جزاءات ومكافآت باعتماد المالك.
+-   طلب السلفة من الموظف واعتماد المالك قبل الصرف.
+-   المالك يحدد موعد راتب مستقل لكل موظف.
+-   طرق الصرف: نقدي، محفظة، InstaPay، بنك، أو دفعات.
+-   كشف راتب خاص، والموظف يرى بياناته فقط.
+-   الورديات والتبديل بموافقة المالك.
+-   تنبيهات الوردية والحضور والإجازات.
+-   العهد والأدوات بسجل استلام وإرجاع وحالة.
+-   ملاحظات إدارية سرية للمالك فقط.
+-   تقييم الأداء والإنتاجية ملغى.
+
+## المحاسبة
+
+-   دليل حسابات تلقائي قابل لإدارة المالك.
+-   قيود يومية تلقائية ومتوازنة.
+-   ميزان مراجعة.
+-   قائمة دخل.
+-   ميزانية عمومية.
+-   قائمة تدفقات نقدية.
+-   التحويلات الداخلية لا تحتسب إيراداً أو مصروفاً أو تدفقاً خارجياً.
+-   تقرير أعمار الديون غير معتمد بعد.
+
+## الحوكمة
+
+-   لا يعاد سؤال المستخدم عن قرار اعتمده.
+-   لا تنفذ ميزة غير معتمدة.
+-   لا يدعى تنفيذ أو اختبار لم يحدث.
+-   تحديث ملفات المشروع مع كل قرار جديد.

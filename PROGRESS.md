@@ -1,32 +1,38 @@
-# KAYAN STORE ERP — Project Progress
+# KAYAN STORE ERP --- PROGRESS
 
-## Current Status
-- Project stage: Phase 0 — Preparation and Documentation
-- Project approval: Approved
-- Main branch: main
+## الحالة العامة
 
-## Completed
-- GitHub repository created: Kayan-Store-ERP
-- Supabase development project created
-- GitHub and Supabase integration configured
-- PROJECT_SPEC.md created
-- README.md created
-- Final technical plan reviewed and approved
+**المرحلة:** تخطيط وتجميع متطلبات.\
+**التنفيذ البرمجي:** لم يبدأ وفق آخر حالة موثقة.\
+**قاعدة البيانات:** كانت فارغة (0 جداول) عند آخر مراجعة.\
+**بيئة Supabase:** Free للتطوير والاختبار؛ لا تستخدم كبيئة إنتاج نهائية
+دون مراجعة الخطة.
 
-## Current Work
-- Preparing project documentation
-- No database tables created
-- No application code implemented
+## ما تم إنجازه في التخطيط
 
-## Next Steps
-- Complete Phase 0 documentation
-- Review project structure
-- Prepare the development environment
-- Design and review the database schema before implementation
+-   تحديد البنية التقنية المستهدفة.
+-   اعتماد المبادئ المركزية للبيانات والصلاحيات والتدقيق.
+-   اعتماد المتطلبات الأساسية للـPOS والمنتجات والمخزون والمشتريات
+    والعملاء.
+-   اعتماد خدمات شحن الرصيد ودفع الفواتير.
+-   اعتماد المحافظ وInstaPay والخزائن.
+-   اعتماد المصروفات الشخصية والحساب الجاري للمالك.
+-   اعتماد توزيع الأرباح وسجل الشركاء.
+-   اعتماد المتطلبات الأساسية للموارد البشرية والرواتب والسلف.
+-   اعتماد دليل الحسابات والقيود اليومية وميزان المراجعة والقوائم
+    المالية.
+-   تحديد متطلبات Offline-first والنسخ الاحتياطي والاختبارات.
 
-## Important Rules
-- Do not expose secrets or API keys
-- Do not create database tables before schema approval
-- Do not use production data during development
-- Record important decisions and changes
-- Test every implemented feature before declaring it complete
+## ما لم يتم بعد
+
+-   مراجعة واعتماد تفاصيل الأقسام التي لم تستكمل.
+-   تصميم ERD ومخطط قاعدة البيانات.
+-   كتابة migrations وسياسات RLS والإجراءات المركزية.
+-   تنفيذ واجهات التطبيق.
+-   تنفيذ المزامنة Offline.
+-   الاختبارات الفعلية.
+-   تجهيز بيئة الإنتاج.
+
+## قاعدة تحديث الملف
+
+لا تسجل أي مهمة على أنها مكتملة إلا بعد تنفيذها والتحقق منها فعلياً.

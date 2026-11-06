@@ -1,344 +1,260 @@
-KAYAN STORE ERP
-
-Project Master Specification
-
-1. Project Overview
-
-Build a complete, professional, secure ERP system for KAYAN STORE in Egypt.
-
-This is a new project from scratch. Do not assume any existing application, database, or legacy data.
-
-The system must manage:
-
-- Mobile accessories and electronics retail.
-- Inventory and warehouses.
-- Point of Sale (POS).
-- Purchases, suppliers, and customers.
-- Sales, returns, and exchanges.
-- Mobile recharge and telecom services.
-- Electronic wallets and InstaPay.
-- Mobile and electronics maintenance.
-- Cash treasury and accounting.
-- Employees, attendance, and wages.
-- Online orders and delivery.
-- Reports, notifications, and audit logs.
-
-2. Technical Foundation
-
-- Database: Supabase PostgreSQL.
-- Backend: secure server-side business logic.
-- Repository: GitHub.
-- Application: responsive web application, installable as PWA where supported.
-- Currency: EGP.
-- Time zone: Africa/Cairo.
-- Fiscal year: January 1 to December 31.
-- Languages: Arabic (RTL), English (LTR), and Turkish (LTR).
-- Support multiple branches and warehouses from the beginning.
-- Start with one branch and one warehouse.
-
-Choose a maintainable architecture and document all technical decisions.
-
-Do not expose database secrets or service-role keys in frontend code.
-
-3. Owner Control and Permissions
-
-The owner must have full control over:
-
-- Application settings and appearance.
-- Navigation, pages, forms, and dashboards.
-- Product categories and classifications.
-- Prices, discounts, promotions, and minimum selling prices.
-- Employee accounts and permissions.
-- Financial and inventory settings.
-- Reports, templates, and integrations.
-
-Employees must not modify application structure, prices, or sensitive settings without authorization.
-
-Permissions must be enforced by the backend, not merely by hiding interface elements.
-
-All sensitive actions must be recorded in an immutable audit log with user, device, timestamp, action, and old/new values.
-
-4. Inventory and Products
-
-Every product must support:
-
-- Name, SKU, barcode, description, image, category, brand, and model.
-- Purchase cost and approved selling prices.
-- Retail, wholesale, and customer-group prices.
-- Variants such as colors and models.
-- Variant-specific barcode, stock, cost, and price.
-- IMEI or serial numbers where applicable.
-- Supplier relationships.
-- Minimum stock and reorder target.
-
-Inventory must track opening stock, purchases, sales, returns, adjustments, reservations, and available quantities.
-
-Use whole units only. Never allow fractional product quantities.
-
-Every stock change must create a traceable stock movement.
-
-Prevent negative inventory unless explicitly authorized by the owner.
-
-Use Moving Weighted Average for inventory valuation.
-
-5. POS and Sales
-
-The POS must support:
-
-- Barcode and product search.
-- Product variants.
-- Shopping cart and quantity editing.
-- Customer selection.
-- Approved prices and discounts.
-- Cash, wallets, InstaPay, mixed payments, partial payments, and credit.
-- Suspended sales and resuming them.
-- Printable and PDF invoices.
-- Returns and exchanges.
-
-Support manual invoice items that do not affect inventory. Allow authorized users to register them as permanent products separately.
-
-Do not deduct inventory until a sale is confirmed.
-
-6. Purchases and Suppliers
-
-Support supplier records, purchase orders, product costs, expenses, payment records, supplier balances, returns, and statements.
-
-A purchase must be received and reconciled before closure.
-
-Do not support partial receipt of a single purchase order. Differences between ordered and received quantities must be flagged and resolved before closing.
-
-Never rewrite historical inventory costs when new purchases occur.
-
-7. Customers and Credit
-
-Support customer categories, customer history, loyalty points, balances, credit limits, partial collections, and statements.
-
-Credit sales must not use an installment plan.
-
-Only authorized users may exceed customer credit limits.
-
-8. Telecom and Electronic Wallets
-
-Support:
-
-- Vodafone Egypt.
-- Orange Egypt.
-- e& Egypt.
-- WE.
-- Vodafone Cash.
-- Orange Cash.
-- e& Cash.
-- WE Pay.
-- InstaPay.
-
-Track transaction amounts, actual provider costs, customer collections, fees, store commissions, supplier commissions, status, and receipts.
-
-Store Commission and Supplier Commission must be separate.
-
-Never assume a telecom provider API exists unless a real integration has been implemented and tested.
-
-Only successful transactions may recognize completed commission revenue. Failed, pending, cancelled, or refunded transactions must not be treated as completed revenue.
-
-9. Maintenance
-
-Create unique maintenance orders with:
-
-- Customer and device information.
-- IMEI or serial number.
-- Fault description and inspection.
-- Device condition and accessories.
-- Assigned technician.
-- Spare parts and their inventory movements.
-- Repair cost and final customer price.
-- Deposit and outstanding balance.
-- Expected and actual dates.
-- Warranty and delivery confirmation.
-
-Statuses:
-Received, Inspection, Awaiting Customer Approval, Repairing, Waiting for Parts, Ready, Delivered, Cancelled.
-
-10. Treasury and Accounting
-
-Implement genuine double-entry accounting.
-
-Include:
-
-- Chart of accounts.
-- Journal entries.
-- General ledger.
-- Trial balance.
-- Income statement.
-- Balance sheet.
-- Cash treasury accounts.
-- Customer and supplier accounts.
-- Wallet accounts.
-- Revenue, expenses, COGS, returns, discounts, and taxes.
-
-Every posted journal entry must balance.
-
-Do not post the same transaction twice.
-
-Correct posted transactions through reversal entries, not deletion.
-
-Use DECIMAL for financial amounts, never FLOAT.
-
-Internal transfers are neither revenue nor expenses.
-
-11. Employees and Wages
-
-Support employee profiles, roles, attendance, PIN-based clock-in/out, advances, deductions, and bonuses.
-
-Initial hourly wage: 12 EGP per hour.
-
-Overtime hourly wage: 12 EGP per hour.
-
-Calculate wages by actual minutes worked.
-
-Do not create employee commissions or assumed monthly salaries.
-
-Only the owner can change the hourly wage.
-
-Deduct wages from treasury only when payment is approved and actually made.
-
-12. Online Orders and Delivery
-
-Support online orders, customer addresses, products, shipping fees, tracking numbers, delivery status, COD, collections, delivery costs, returns, and profitability.
-
-Support internal delivery representatives, assigned orders, cash custody, collections, expenses, and settlements.
-
-13. Offline and Synchronization
-
-The system must support genuine offline operation and multi-device synchronization.
-
-Requirements:
-
-- Local secure storage.
-- Offline operation queue.
-- Unique UUID for each operation.
-- Idempotency to prevent duplicate transactions.
-- Two-way synchronization.
-- Conflict detection and resolution.
-- Server confirmation before marking an operation synchronized.
-
-Test inventory conflicts, including two devices selling the last available unit while offline.
-
-Never claim offline support unless it has been implemented and tested.
-
-14. Security and Audit
-
-Implement:
-
-- Secure password hashing.
-- Server-side authorization.
-- Session management.
-- Login rate limiting.
-- Owner multi-factor authentication.
-- Remote employee session termination.
-- Secure file uploads.
-- Secrets management.
-- Audit logging.
-- Protection against duplicate financial operations.
-
-15. Backup and Recovery
-
-Provide automated backups, encrypted storage, off-server backup copies, and documented retention policies.
-
-Test actual restoration of database and attachments.
-
-Create a backup before major updates.
-
-16. Reports and Data Export
-
-Provide dashboards and reports for sales, purchases, stock, profits, expenses, customers, suppliers, wallets, telecom commissions, maintenance, wages, delivery, and accounting.
-
-Financial reports must derive from the accounting ledger.
-
-Support XLSX, CSV, and PDF exports where appropriate.
-
-Support Excel imports with validation, preview, duplicate detection, and error reports.
-
-17. WhatsApp and Notifications
-
-Where a supported provider is available, integrate WhatsApp Business messaging for order confirmations, invoices, delivery updates, maintenance updates, and payment reminders.
-
-Support OTP authentication through WhatsApp only when a real provider integration is configured and tested.
-
-Provide an in-app notification center and owner alerts for sensitive actions.
-
-18. Interface and Design
-
-Use a professional Luxury Light Theme by default.
-
-Do not force black and gold. Extract brand colors from the official KAYAN STORE logo when provided.
-
-The interface must be responsive on mobile, tablet, and desktop.
-
-Arabic is the default RTL language.
-
-Provide consistent navigation, readable tables, accessible forms, clear validation, loading states, and reliable error handling.
-
-All buttons and forms must perform real backend operations.
-
-19. Development Rules
-
-- Build in documented phases.
-- Use real persistent database operations.
-- Never use fake buttons or simulated integrations.
-- Never insert demo data into production.
-- Never claim a feature is complete without testing it.
-- Preserve existing project work.
-- Document database schema and business rules.
-- Keep migrations version-controlled.
-- Use secure Row Level Security policies.
-- Keep all sensitive business logic server-side.
-
-20. Acceptance Testing
-
-Test all major workflows, including:
-
-- Product creation and editing.
-- Inventory movements and variants.
-- Barcode scanning.
-- Manual and mixed POS invoices.
-- Purchases and supplier payments.
-- Credit sales and collections.
-- Returns and exchanges.
-- Treasury and wallet operations.
-- Telecom commissions and failed transactions.
-- Maintenance and spare parts.
-- Attendance and hourly wage calculations.
-- Owner permissions and audit logs.
-- Excel imports and PDF invoices.
-- Backup and restore.
-- Multi-device synchronization.
-- Offline conflict resolution.
-- Responsive mobile and desktop operation.
-- Accounting balance and duplicate prevention.
-
-For each test, document expected result, actual result, Pass/Fail, and any errors.
-
-21. Implementation Roadmap
-
-1. Architecture and technical design.
-2. Database schema, authentication, permissions, and audit.
-3. Owner control center.
-4. Products and inventory.
-5. POS and barcode.
-6. Purchases, suppliers, and customers.
-7. Treasury and accounting.
-8. Telecom and wallets.
-9. Maintenance.
-10. Employees and wages.
-11. Online orders and delivery.
-12. Reports and global search.
-13. Offline synchronization.
-14. Security, backup, notifications, and updates.
-15. Integration and acceptance testing.
-
-Final Delivery Requirement
-
-Deliver a genuinely working, deployable ERP application, not merely a design or implementation plan.
-
-Report completed modules, database tables, integrations, actual test results, known limitations, remaining work, deployment requirements, and owner account initialization instructions.
-
-Prioritize data integrity, accounting correctness, inventory accuracy, security, owner control, synchronization, and usability over appearance alone.
+# KAYAN STORE ERP --- PROJECT_SPEC
+
+**الحالة:** تخطيط وتجميع متطلبات؛ لم يبدأ التنفيذ البرمجي أو إنشاء جداول
+قاعدة البيانات وفق آخر حالة موثقة.\
+**العملة:** EGP --- **المنطقة الزمنية:** Africa/Cairo --- **السنة
+المالية:** تبدأ في 1 يناير.
+
+## 1. الهدف والبنية
+
+نظام ERP موحد لإدارة KAYAN STORE. الأقسام الرئيسية: لوحة التحكم، POS
+والفواتير، المنتجات والمخزون، المشتريات والموردون، العملاء، شحن الرصيد
+والفواتير، المحافظ وInstaPay، الخزائن والمصروفات، الصيانة وما بعد البيع،
+الطلبات والتوصيل، الموارد البشرية، المحاسبة، التقارير، التسويق، الجودة،
+الاستراتيجية، الأمان والحوكمة، المستندات والاتصالات.
+
+البنية التقنية المستهدفة: React + TypeScript + Vite + Tailwind + PWA،
+وSupabase PostgreSQL/Auth/Storage/Edge Functions، وIndexedDB/Dexie للعمل
+دون إنترنت. هذه بنية مستهدفة وليست تنفيذاً قائماً. مستودع GitHub:
+https://github.com/atchletto-creator/Kayan-Store-ERP. مشروع Supabase:
+KAYAN-STORE-ERP، خطة Free للتطوير والاختبار، منطقة Frankfurt -- Central
+EU. قاعدة البيانات كانت فارغة عند آخر مراجعة.
+
+## 2. المبادئ العامة
+
+-   قاعدة بيانات مركزية هي مصدر الحقيقة.
+-   لا تعديل مباشر للأرصدة من الواجهات؛ كل حركة عبر إجراءات مركزية آمنة.
+-   العمليات المالية والمخزنية ذرية، قابلة للتدقيق، ومحمية من التكرار.
+-   UUID ومراجع فريدة لكل عملية، وidempotency.
+-   القيود المرحلة لا تحذف أو تعدل مباشرة؛ التصحيح بقيد عكسي موثق.
+-   الصلاحيات على مستوى قاعدة البيانات والخادم.
+-   لكل قسم دورة حالات وانتقالات خاصة.
+-   Offline-first مع Outbox ومزامنة ثنائية الاتجاه ومعالجة تعارضات.
+-   لا تجاوز للأرصدة أو المخزون إلا باستثناء مصرح وموثق.
+-   سجل تدقيق غير قابل للتلاعب للعمليات الحساسة.
+
+## 3. الواجهة والإعدادات
+
+العربية RTL افتراضياً، ودعم الإنجليزية والتركية مع LTR. واجهة متجاوبة
+للكمبيوتر والتابلت والهاتف. هوية فاتحة فاخرة؛ الشعار النهائي غير معتمد.
+القوائم والشاشات والأعمدة والتقارير قابلة للتخصيص من المالك. طباعة
+حرارية 58/80 مم وA4 والباركود والملصقات مع خط عربي مناسب لـPDF. العملة
+EGP، المنطقة الزمنية Africa/Cairo، السنة المالية 1 يناير. الضرائب غير
+مفعلة افتراضياً لحين تأكيد الوضع الضريبي.
+
+## 4. الأقسام الرئيسية
+
+1.  Dashboard.
+2.  POS والفواتير.
+3.  المنتجات والمخزون.
+4.  المشتريات والموردون.
+5.  العملاء وCRM.
+6.  الخزائن والمحافظ والمدفوعات.
+7.  الصيانة وما بعد البيع.
+8.  الطلبات الإلكترونية والتوصيل.
+9.  الموظفون والموارد البشرية.
+10. المحاسبة والأرباح.
+11. التقارير والتحليلات.
+12. التسويق والحملات.
+13. الجودة وتجربة العملاء.
+14. الاستراتيجية والمشروعات.
+15. الأمان والحوكمة والامتثال.
+16. المستندات والاتصالات والمعرفة.
+
+## 5. POS والمبيعات
+
+شاشة بيع مستقلة كاملة؛ إخفاء القائمة الجانبية مع زر خروج. عمود للمنتجات
+والتصنيفات والبحث والباركود، وعمود للسلة والإجماليات والخصومات والضرائب
+والمدفوعات والمتبقي. سلة مستمرة، وربط الفاتورة بالعميل والموظف والخزينة.
+تحديث المخزون والقيود المحاسبية آلياً. دعم البيع النقدي والآجل والمدفوع
+جزئياً. المرتجعات تعكس الحركة الأصلية ولا تحذفها. دعم Offline مع معالجة
+تعارضات المخزون قبل اعتماد البيع النهائي.
+
+## 6. المنتجات والمخزون
+
+-   سجل رئيسي واحد لكل منتج مع متغيرات مستقلة للون/الموديل/السعة.
+-   لكل متغير SKU وباركود وسعر وتكلفة وكمية مستقلة.
+-   IMEI/Serial للأجهزة الفردية ومنع التكرار؛ وتتبع الدُفعات والمورد
+    والتكلفة وتاريخ الشراء والصلاحية والمرتجعات والتالف.
+-   FIFO للصرف وFEFO للصلاحية، ومتوسط تكلفة متحرك مع الاحتفاظ بالتكلفة
+    التاريخية.
+-   منع المخزون السالب إلا بموافقة المالك؛ جرد كلي أو جزئي واعتماد فروق
+    الجرد.
+-   حد أدنى ومستهدف وتنبيهات مخزون منخفض وراكِد.
+-   تصنيفات وعلامات تجارية قابلة للإدارة، ومجموعات يدوية أو قائمة على
+    قواعد، وباقات تخصم مكوناتها من المخزون.
+-   توافق موديلات الهواتف مع الجرابات وواقيات الشاشة؛ أدوات التعرف
+    البصري مساعدة وليست ضماناً.
+-   اقتراح بدائل ومكملات داخل POS دون إضافة تلقائية.
+-   صور متعددة لكل منتج ومتغير، وصورة رئيسية لـPOS؛ صور حالة المنتج عند
+    البيع اختيارية أو حسب إعداد المالك.
+-   حجوزات للعميل بمدة انتهاء وصلاحيات للتمديد والإلغاء.
+-   عدة موردين للمنتج ومقارنة الأسعار وتحديد المورد المفضل.
+-   مخزون أمانة Consignment وتسوية المورد بموافقة المالك.
+-   واجهة Grid/Table، تفضيل لكل مستخدم، وأعمدة قابلة للتخصيص.
+
+## 7. المشتريات والعملاء
+
+ملفات الموردين وأوامر وفواتير الشراء والتكلفة والمدفوع والمتبقي؛ ربط
+الاستلام بالمخزون والحسابات؛ مرتجعات وسجل كامل ومقارنة الموردين. استلام
+المشتريات دفعة كاملة؛ لا استلام جزئي معتمد حالياً. ملف موحد للعميل وسجل
+المبيعات والمرتجعات والخدمات والطلبات والحجوزات، كشف حساب ومديونيات
+وتحصيل جزئي أو كامل، بيع آجل بحدود ائتمان وتنبيهات استحقاق، وكشوف تجارية
+يومية/أسبوعية/شهرية.
+
+## 8. شحن الرصيد ودفع الفواتير
+
+الخدمات: Vodafone وOrange وEtisalat/e& وWE، باقات وبيانات وإنترنت،
+فواتير الهاتف الأرضي والإنترنت، كروت الكهرباء مسبقة الدفع بإدخال يدوي،
+وخدمات يضيفها المالك. **NFC مرفوض ولا يستخدم.** - عمولة المحل = ما يدفعه
+العميل − التكلفة الفعلية على الماكينة. مثال: 25 − 22.50 = 2.50 جنيه. -
+عند النجاح: خصم التكلفة من الماكينة وإضافة العمولة لخزينة المحل؛ لا تضاف
+العمولة لرصيد الماكينة. - عمولة حسب الخدمة/الشركة/شرائح القيمة، ثابتة أو
+نسبة أو مختلطة، مع تاريخ سريان وحفظ العمولة التاريخية. - عدة ماكينات لكل
+شركة، لكل منها رصيد وكشف مستقل، وتمويلها من حساب مصدر كتحويل داخلي لا
+كإيراد أو مصروف. - حدود يومية، تحذير عند 80%، وتجاوز بموافقة. - حالات
+نجاح/فشل/انتظار/استرداد. لا إعادة محاولة عمياء؛ الاستعلام أولاً لمنع
+الخصم المزدوج. - لا عمولة موظف تلقائية؛ العمولة للمحل، ومكافأة الموظف
+منفصلة بقرار المالك. - تقارير حسب الشركة والماكينة والخدمة والموظف، وكشف
+ماكينة وإقفال ومطابقة يومية. - دعم الخدمة على حساب العميل والتحصيل
+الجزئي/الكامل. - الاسترداد مرتبط بالعملية الأصلية ويعكس المبالغ
+والعمولات حسب النتيجة الفعلية، مع منع التكرار. - API رسمي فقط عند توفره؛
+لا يفترض وجود تكامل غير مثبت.
+
+## 9. المحافظ وInstaPay
+
+حساب مستقل لكل من Vodafone Cash وOrange Cash وe& Cash وWE Pay وInstaPay.
+إيداع وسحب للعميل وتحويلات داخلية وتمويل وسحب إلى خزينة المحل ومطابقة
+يومية. تسجيل بيانات صاحب العملية الخارجية فقط؛ التحويل الداخلي لا يحتاج
+بيانات عميل. العمولة للمحل بعد نجاح العملية، وأصل المبلغ ليس ربحاً. -
+Wallet → InstaPay غير مسموح؛ InstaPay → Wallet مسموح؛ InstaPay →
+InstaPay إذا دعمته الخدمة؛ باقي التحويلات وفق الدعم الفعلي. - خزينة
+مستقلة للمحافظ وInstaPay بحساب فرعي لكل محفظة، منفصلة عن خزينة المحل. -
+التحويلات الداخلية ليست إيراداً أو مصروفاً. - المالك يحدد لكل موظف
+السماح/المنع والحد المالي والحسابات المسموحة واشتراط الموافقة. - كشف
+مستقل وإقفال ومطابقة ورصد pending/failed وتصدير PDF/Excel. - لا تفترض
+APIs أو تكاملات مصرفية غير متاحة رسمياً.
+
+## 10. الخزائن والمصروفات وحساب المالك
+
+المصروف التشغيلي يسجل القيمة والتصنيف والتاريخ ومصدر الدفع والمسؤول
+والمستفيد والوصف والمرفق وحالة الاعتماد والمرجع. يوجد قسم مصروفات شخصية
+سري للمالك فقط، محمي على مستوى قاعدة البيانات، لا يظهر للموظفين أو
+تقاريرهم. المصروف الشخصي يسجل كذمة على المالك ولا يخصم نقداً من الخزينة
+بمجرد تسجيله كدين، ويسدد جزئياً أو كلياً. الحساب الجاري للمالك: المصروفات
+الشخصية مدينة عليه، وإيداعاته تمويل/رصيد دائن وليست إيراداً. يجب الفصل
+بين مصروفات التشغيل والمصروفات الشخصية والمسحوبات والتمويل وتوزيعات
+الأرباح ومستحقات الشركاء.
+
+## 11. الأرباح وتوزيعها
+
+المالك يوزع في أي وقت، ويمكن توزيع جزء وترك الباقي داخل المحل، ولا يسمح
+بتوزيع أكثر من الأرباح القابلة للتوزيع. النسب قابلة للتعديل في أي وقت من
+المالك ومجموعها 100%، والتعديل يسري على الأرباح الجديدة فقط ولا يغير
+التوزيعات السابقة. النسب التاريخية: عمر 30%، هشام 30%، المحل 30%،
+الاحتياطي 10%؛ ليست ثابتة بعد قرار قابليتها للتعديل. سجل مستقل لكل شريك
+للمستحق والمدفوع والمتبقي والتواريخ والمراجع وتغييرات النسب. تسويات
+الأرباح ومراجعتها واعتمادها للمالك فقط، مع سبب وتاريخ وقيمة قبل/بعد.
+
+## 12. الصيانة وما بعد البيع
+
+قسم مرتبط بالعميل والمنتج والموظف والمخزون والحسابات. تفاصيل دورة العمل
+والحالات والتكاليف والضمان وقطع الغيار لم تستكمل اعتمادها التفصيلي بعد.
+
+## 13. الموارد البشرية
+
+-   ملف الموظف: الاسم والرقم الوظيفي والهاتف والعنوان والوظيفة والقسم
+    وتاريخ التعيين والراتب الأساسي والحالة؛ الإضافة والتعديل للمالك.
+-   الحضور والانصراف: الوقت والساعات والتأخير والغياب والاستئذان والخروج
+    المبكر وتقارير وتصحيح بموافقة المالك.
+-   الإجازات السنوية والمرضية والطارئة بطلب الموظف واعتماد المالك، مع
+    الأرصدة والسجل.
+-   الجزاءات والمكافآت: السبب والقيمة والتاريخ والملاحظات واعتماد
+    المالك.
+-   السلف: طلب الموظف من حسابه واعتماد المالك قبل الصرف، مع المسدد
+    والمتبقي والربط بالراتب.
+-   الرواتب: أساسي ومكافآت وخصومات وسلف وصافي مستحق ومدفوع ومتأخر.
+-   المالك يحدد موعد صرف مستقل لكل موظف ويستطيع تغييره.
+-   طرق الصرف: نقداً أو محفظة أو InstaPay أو بنك أو دفعات متعددة.
+-   كشف راتب تفصيلي PDF، والموظف يرى سجله فقط؛ الحماية على مستوى قاعدة
+    البيانات.
+-   الورديات: أيام وساعات مستقلة، تبديل بطلب واعتماد المالك، وربط
+    بالحضور.
+-   التنبيهات: بداية الوردية والتأخير والإجازات والحضور والانصراف
+    والغياب.
+-   العهد: أجهزة وأدوات ومفاتيح، مستلم وتاريخ وحالة وتوقيع وإرجاع
+    واستبدال وتلف وفقد.
+-   سجل إداري سري لكل موظف، للمالك فقط، مع سجل تعديل.
+-   **ملغى:** تقييم الأداء والإنتاجية.
+
+## 14. المحاسبة
+
+دليل حسابات تلقائي، والمالك يضيف ويعدل ويوقف؛ لا حذف لحساب ذي حركات.
+قيود يومية تلقائية مرتبطة بالعملية الأصلية ومتوازنة مدين/دائن؛ التصحيح
+بقيد عكسي. ميزان مراجعة بالأرصدة الافتتاحية والحركات والختامية والفترة
+وPDF/Excel. قائمة دخل بالإيرادات وتكلفة المبيعات ومجمل الربح والمصروفات
+وصافي الربح/الخسارة. ميزانية عمومية للأصول والالتزامات وحقوق الملكية.
+قائمة تدفقات نقدية تشغيلية واستثمارية وتمويلية وصافي التغير والرصيد
+الافتتاحي والختامي. التحويلات الداخلية لا تحتسب إيراداً أو مصروفاً أو
+تدفقاً خارجياً/داخلياً. تقرير أعمار الديون طُرح ولم يعتمد بعد.
+
+## 15. Offline-first والمزامنة
+
+تخزين محلي IndexedDB/Dexie وقائمة Outbox وUUID لكل عملية، مزامنة ثنائية
+الاتجاه، منع التكرار ومعالجة التعارضات دون حذف. دعم محلي للمبيعات
+والمنتجات والمخزون والعملاء والمشتريات والطباعة والتقارير المتاحة محلياً.
+التخزين محدود بسعة الجهاز؛ العمليات التي تحتاج موافقة مركزية تنتظر
+الاتصال. إذا بيع آخر منتج على جهازين Offline، يعتمد أول sync صالح،
+والثاني يصبح تعارضاً يحله المالك بالاستبدال أو الإلغاء أو الاسترداد أو
+استثناء موثق؛ لا يعتمد خصم مخزون نهائي قبل الحل. أوامر المالك عن بعد لا
+تنفذ على جهاز غير متصل إلا بعد المزامنة.
+
+## 16. الأمان والصلاحيات
+
+حساب المالك مع MFA ورموز استرداد. حسابات الموظفين باسم مستخدم وكلمة مرور
+دون بريد ظاهر أو تسجيل ذاتي. PIN للحضور منفصل عن تسجيل الدخول؛ المالك
+يعيد تعيينه. خمس محاولات PIN خاطئة متتالية: قفل الحضور 15 دقيقة، تنبيه
+المالك، وسجل أمني. صلاحيات حسب الدور والقسم والفرع؛ الموظف قد يحمل عدة
+أدوار. منع الاعتماد الذاتي إلا باستثناء موثق. إدارة جلسات وأجهزة وتسجيل
+خروج عن بعد وتعليق الحساب وإعادة كلمة المرور وتنبيه جهاز جديد وحد
+الأجهزة ومواعيد الدخول وتاريخ انتهاء الحساب. Offline قد يؤخر تنفيذ
+التغييرات المركزية؛ العمليات الحساسة تقيد عند عدم الاتصال.
+
+## 17. الخدمات المركزية
+
+محرك موافقات، محرك حالات، محرك إشعارات، ترقيم ومراجع، إدارة مستندات
+ومرفقات، بحث شامل بصلاحيات، استيراد/تصدير Excel وCSV مع معاينة والتحقق،
+محرك تحقق بيانات، إدارة أخطاء واستثناءات، مراقبة صحة النظام، إدارة
+إصدارات وتحديثات وتراجع آمن، وتكاملات خارجية رسمية فقط.
+
+## 18. النسخ الاحتياطي
+
+14 نسخة يومية، 8 أسبوعية، 12 شهرية ونسخة سنوية؛ الاحتفاظ لمدة سنة. تشمل
+قاعدة البيانات والمرفقات، مشفرة وخارج GitHub وSupabase، مع اختبارات
+استعادة دورية. Supabase Free للتطوير والاختبار فقط؛ بيئة إنتاج منفصلة
+وتقييم Pro قبل الإنتاج.
+
+## 19. الفروع والاختبارات
+
+تصميم قابل لتعدد الفروع والمخازن بصلاحيات وأرصدة وتقارير مستقلة
+وتحويلات. اختبارات تكامل للمبيعات والشراء والمخزون والتحصيل والخزائن
+والمرتجعات والشحن والمحافظ والرواتب والقيود والصلاحيات وOffline والنسخ
+والاستعادة. اختبارات ضغط وتزامن وانقطاع اتصال واستعادة. اختبار فعلي
+للكمبيوتر والتابلت والهاتف والمتصفحات والطابعات الحرارية وA4 والباركود
+وUSB/Bluetooth/Wi-Fi. لا إطلاق إنتاجي قبل اجتياز الأمان والأداء والتوافق
+وسلامة البيانات والنسخ والاستعادة وموافقة المالك.
+
+## 20. حالة القرارات
+
+**ملغى:** NFC لكروت الكهرباء؛ تقييم الأداء والإنتاجية؛ عمولات إضافية
+خاصة بالعملاء التجاريين في الشحن.\
+**غير محسوم:** تقرير أعمار الديون؛ التفاصيل التشغيلية للصيانة والتوصيل
+والتسويق والجودة والاستراتيجية؛ الوضع الضريبي؛ الشعار النهائي؛ أي تكامل
+API غير مثبت.
+
+## 21. قواعد إدارة المشروع
+
+لا يعاد سؤال المستخدم عن قرار اعتمده. لا يعتبر الاقتراح قراراً قبل
+الموافقة. لا تضاف ميزات غير مطلوبة. كل قرار جديد يوثق في DECISIONS.md
+ويحدث PROJECT_SPEC.md. تحديث PROGRESS.md يعكس الإنجاز الفعلي فقط ولا
+يدعي تنفيذ شيء لم ينفذ.

@@ -1,2 +1,27 @@
-# Kayan-Store-ERP
-ERP System for Mobile Accessories Shop
+# KAYAN STORE ERP
+
+نظام ERP لإدارة عمليات KAYAN STORE.
+
+## الحالة الحالية
+
+المشروع في مرحلة التخطيط وتجميع المتطلبات. لا تعتبر هذه الوثائق دليلاً
+على اكتمال أي تنفيذ برمجي أو إنشاء جداول قاعدة البيانات.
+
+## الوثائق
+
+-   `PROJECT_SPEC.md`: المواصفات الرئيسية.
+-   `DECISIONS.md`: سجل القرارات المعتمدة.
+-   `PROGRESS.md`: حالة الإنجاز الفعلية.
+-   `KNOWN_LIMITATIONS.md`: القيود والنقاط غير المحسومة.
+-   `TESTS.md`: خطة الاختبارات.
+
+## التقنية المستهدفة
+
+React + TypeScript + Vite + Tailwind + PWA، مع Supabase
+PostgreSQL/Auth/Storage/Edge Functions، وIndexedDB/Dexie للعمل دون
+إنترنت.
+
+## مبدأ العمل
+
+لا يعاد فتح قرار معتمد دون سبب، ولا تنفذ ميزة غير معتمدة. يجب تحديث سجل
+القرارات والمواصفات عند اعتماد أي تغيير.
